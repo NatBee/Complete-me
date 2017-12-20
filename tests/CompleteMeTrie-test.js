@@ -11,6 +11,8 @@ describe('Complete Me', () => {
     completion = new Trie();
   });
 
+//Insert
+
   it('should start with zero elements', () => {
     expect(completion.count).to.eq(0);
   })
@@ -21,8 +23,8 @@ describe('Complete Me', () => {
 
   it('should insert the letters of a word into the trie in order', () => {
     completion.insert("hi");
-    expect(Object.keys(completion.root.children)[0]).to.eq('h');
-    expect(Object.keys(completion.root.children.h.children)[0]).to.eq('i');
+    expect(completion.root.children.hasOwnProperty('h')).to.eq(true);
+    expect(completion.root.children.h.children.hasOwnProperty('i')).to.eq(true);
   })
 
   it('should be able to count how many words have been inserted', () => {
@@ -41,7 +43,7 @@ describe('Complete Me', () => {
     expect(completion.root.children.h.children.i.wordEnd).to.eq(true);
   })
 
-   it('should not create duplicate nodes when inserting duplicate words', () => {
+  it('should not create duplicate nodes when inserting duplicate words', () => {
     completion.insert('hello');
     completion.insert('bye');
     completion.insert('hi');
@@ -49,37 +51,49 @@ describe('Complete Me', () => {
     console.log(completion.count);
   })
 
-   it('should share a parent node for words that start with same letter', () => {
+  it('should share a parent node for words that start with same letter', () => {
     completion.insert('hello');
     completion.insert('hi');
 
-    expect(Object.keys(completion.root.children.h.children)).to.eq(['e', 'i']);
+    expect(Object.keys(completion.root.children.h.children)).to.deep.eq(['e', 'i']);
+  })
 
+  it('should not count duplicate words in the word count', () => {
+    completion.insert('hi');
+    completion.insert('bye');
+    completion.insert('hi');
+
+    expect(completion.count).to.eq(2);
+  }) 
+
+
+//Suggest
+  it('should return null if there is no word that matches the suggestion', () => {
+    completion.insert('friend');
+    let suggestion = completion.suggest('barbarella');
+
+    expect(suggestion).to.eq(null);
+  })
+
+  it('should take in a string and return an array', () => {
+    completion.insert('pizza');
+    expect(completion.suggest('piz')).to.be.array;
+  });
+
+  it('should return all of the words that start with the suggested phrase', () => {
+    completion.insert('pizza');
+    completion.insert('pizzeria');
+    let suggestion = completion.suggest('piz');
+
+    expect(suggestion).to.deep.eq(['pizza', 'pizzeria']);
    })
 
-   it('should share parent node for words that start with the same letter', () => {
+  it('should return all of the words that start with the suggested letter', () => {
+    completion.insert('ape');
+    completion.insert('apple');
+    completion.insert('attention');
+    let suggestion = completion.suggest('a');
 
-   })
-
-   it('should not count duplicate words in the word count', () => {
-
-   }) 
-
-   it('should return words that start with the suggested phrase', () => {
-    // completion.insert('pizza');
-    // completion.suggest('piz');
-    // expect('pizza').to.equal()
-   })
-
-//    completion.suggest("piz")
-// => ["pizza"]
-
-// completion.insert("pizzeria")
-
-// completion.suggest("piz")
-// => ["pizza", "pizzeria"]
-
-// completion.suggest('a')
-// => ["apple"]
-
+    expect(suggestion).to.deep.eq(['ape', 'apple', 'attention']);
+  })
 })

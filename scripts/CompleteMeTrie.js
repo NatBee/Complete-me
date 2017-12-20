@@ -7,21 +7,56 @@ export default class Trie {
   }
 
   insert(word) {
-    let currentNode = this.root;
-    this.count++;
     let stringArr = [...word];
+    let currentNode = this.root;
 
-    for(let i = 0; i < stringArr.length; i++) {
-      let data = stringArr[i];
-      // need to loop
-      let child = new Node(data);
-      currentNode.children[data] = child;
-      currentNode = currentNode.children[data];
-    }   
-    //need to add a check to see if word already exist 
-    //and don't increment counter if it does 
+    stringArr.forEach(letter => {
+      if(!currentNode.children[letter]) {
+        currentNode.children[letter] = new Node(letter);
+      }
+      currentNode = currentNode.children[letter];
+    });   
+ 
+    if(!currentNode.wordEnd) {
+      this.count++;
+    }
+
     currentNode.wordEnd = true;
-    console.log(JSON.stringify( this.root, null, '\t'));
+    console.log(JSON.stringify(this.root, null, '\t'));
+  }
+
+  suggest(word) {
+    let newWord = word.toLowerCase().split('');
+    let currentNode = this.root;
+
+    newWord.forEach(letter => {
+      if(currentNode && currentNode.children) {
+        currentNode = currentNode.children[letter];
+      }
+    });
+
+    if(!currentNode) {
+      return null;
+    } else {
+      return this.findSuggestion(currentNode, word);
+    }
+  };
+
+  findSuggestion(currentNode, word) {
+    let suggestions = [];
+    let childrenLetters = Object.keys(currentNode.children);
+    
+    childrenLetters.forEach(letter => {
+      let letterNode = currentNode.children[letter];
+      let newWord = word + letter;
+
+      if(letterNode.wordEnd) {
+        suggestions.push(newWord);
+      } else {
+        suggestions.push(...this.findSuggestion(letterNode, newWord));
+      }
+    })
+    return suggestions;
   }
     
 }
