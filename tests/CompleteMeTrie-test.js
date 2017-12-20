@@ -81,7 +81,6 @@ describe('Complete Me', () => {
   it('should take in a string and return an array', () => {
     completion.insert('pizza');
     expect(completion.suggest('piz')).to.be.array;
-    console.log(completion.suggest('piz'))
   });
 
   it('should return all of the words that start with the suggested phrase', () => {
@@ -131,10 +130,19 @@ describe('Complete Me', () => {
     expect(completion.root.children.w.children.e.children.t.frequency).to.equal(2);
     expect(completion.root.children.w.children.e.children.l.children.l.frequency).to.equal(1);
     expect(completion.root.children.w.children.e.children.a.children.r.frequency).to.equal(3);
+    expect(completion.suggest('w')).to.deep.equal(['wear','wet', 'well']);
+  })
 
-    // console.log(completion.suggest('w'));
+  //delete
 
-    expect(completion.suggest('w')).to.deep.equal(['wear','wet', 'well'])
+  it('should delete words', () => {
+    completion.populate(dictionary)
+    completion.suggest("piz")
+    expect(completion.suggest("piz")).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+
+    completion.delete("pizzle");
+    completion.suggest("piz");
+    expect(completion.suggest("piz")).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato"]);
   })
 
 })

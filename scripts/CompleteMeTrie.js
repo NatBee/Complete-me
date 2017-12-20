@@ -88,5 +88,20 @@ export default class Trie {
 
     return currentNode;
   }
+
+  delete(word) {
+    let stringArr = [...word];
+    let currentNode = this.root;
+
+    stringArr.forEach(letter => {
+      currentNode = currentNode.children[letter];
+    });   
+ 
+    if(!currentNode.wordEnd) {
+      this.count--;
+    }
+
+    currentNode.wordEnd = null;
+  }
     
 }
