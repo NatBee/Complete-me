@@ -22,7 +22,7 @@ export default class Trie {
     }
 
     currentNode.wordEnd = true;
-    console.log(JSON.stringify(this.root, null, '\t'));
+    // console.log(JSON.stringify(this.root, null, '\t'));
   }
 
   suggest(word) {
@@ -57,6 +57,12 @@ export default class Trie {
       }
     })
     return suggestions;
+  }
+
+  populate(param) {
+    param.forEach(word => {
+      this.insert(word);
+    })
   }
     
 }

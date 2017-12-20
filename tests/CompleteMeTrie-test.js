@@ -1,13 +1,18 @@
 import { expect } from 'chai';
 import Node from '../scripts/Node'
 import Trie from '../scripts/CompleteMeTrie'
+import fs from 'fs';
 
 
 describe('Complete Me', () => { 
   let node;
   let completion;
+  let text;
+  let dictionary;
 
   beforeEach(() => {
+    text = "/usr/share/dict/words"
+    dictionary = fs.readFileSync(text).toString().trim().split('\n')
     completion = new Trie();
   });
 
@@ -96,4 +101,16 @@ describe('Complete Me', () => {
 
     expect(suggestion).to.deep.eq(['ape', 'apple', 'attention']);
   })
+
+
+  //dictionary
+
+  it('should populate the trie with all of the words in the dictionary', () => {
+    completion.populate(dictionary)
+    let suggestion = completion.suggest("piz")
+    
+    expect(completion.count).to.eq(235886);
+    expect(suggestion).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+  })
+
 })
