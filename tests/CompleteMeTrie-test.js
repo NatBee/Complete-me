@@ -52,8 +52,6 @@ describe('Complete Me', () => {
     completion.insert('hello');
     completion.insert('bye');
     completion.insert('hi');
-    console.log(completion.root);
-    console.log(completion.count);
   })
 
   it('should share a parent node for words that start with same letter', () => {
@@ -83,6 +81,7 @@ describe('Complete Me', () => {
   it('should take in a string and return an array', () => {
     completion.insert('pizza');
     expect(completion.suggest('piz')).to.be.array;
+    console.log(completion.suggest('piz'))
   });
 
   it('should return all of the words that start with the suggested phrase', () => {
@@ -111,6 +110,31 @@ describe('Complete Me', () => {
     
     expect(completion.count).to.eq(235886);
     expect(suggestion).to.deep.eq(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+  })
+
+
+  //select
+
+  it('should keep track of popular words', () => {
+    expect(completion.root.frequency).to.equal(0);
+    completion.insert('wet');
+    completion.insert('well');
+    completion.insert('wear');
+    
+    completion.select('well');
+    completion.select('wet');
+    completion.select('wet');
+    completion.select('wear');
+    completion.select('wear');
+    completion.select('wear');
+
+    expect(completion.root.children.w.children.e.children.t.frequency).to.equal(2);
+    expect(completion.root.children.w.children.e.children.l.children.l.frequency).to.equal(1);
+    expect(completion.root.children.w.children.e.children.a.children.r.frequency).to.equal(3);
+
+    // console.log(completion.suggest('w'));
+
+    expect(completion.suggest('w')).to.deep.equal(['wear','wet', 'well'])
   })
 
 })

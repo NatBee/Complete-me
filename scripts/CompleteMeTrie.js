@@ -38,12 +38,12 @@ export default class Trie {
     if(!currentNode) {
       return null;
     } else {
-      return this.findSuggestion(currentNode, word);
+      return this.findSuggestion(currentNode, word, []);
     }
   };
 
-  findSuggestion(currentNode, word) {
-    let suggestions = [];
+  findSuggestion(currentNode, word, suggestions) {
+    // let suggestions = [];
     let childrenLetters = Object.keys(currentNode.children);
     
     childrenLetters.forEach(letter => {
@@ -51,18 +51,42 @@ export default class Trie {
       let newWord = word + letter;
 
       if(letterNode.wordEnd) {
-        suggestions.push(newWord);
+        suggestions.push({word: newWord, frequency: letterNode.frequency});
       } else {
-        suggestions.push(...this.findSuggestion(letterNode, newWord));
+        this.findSuggestion(letterNode, newWord, suggestions);
       }
     })
-    return suggestions;
+    // return suggestions;
+      return this.sort(suggestions);
+  }
+
+  sort(suggestions) {
+    // console.log(suggestions)
+    suggestions.sort((a, b)  => b.frequency - a.frequency);
+
+    return suggestions.map(suggestion => suggestion.word)
   }
 
   populate(param) {
     param.forEach(word => {
       this.insert(word);
     })
+  }
+
+  select(word) {
+    let currentNode = this.find(word);
+    currentNode.frequency++;
+  }
+
+  find(word) {
+    let stringArr = [...word];
+    let currentNode = this.root;
+
+    stringArr.forEach(letter => {
+      currentNode = currentNode.children[letter];
+    });  
+
+    return currentNode;
   }
     
 }
