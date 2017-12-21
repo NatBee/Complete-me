@@ -11,13 +11,13 @@ export default class Trie {
     let currentNode = this.root;
 
     newWord.forEach(letter => {
-      if(!currentNode.children[letter]) {
+      if (!currentNode.children[letter]) {
         currentNode.children[letter] = new Node(letter);
       }
       currentNode = currentNode.children[letter];
     });   
  
-    if(!currentNode.wordEnd) {
+    if (!currentNode.wordEnd) {
       this.count++;
     }
 
@@ -29,12 +29,12 @@ export default class Trie {
     let currentNode = this.root;
 
     newWord.forEach(letter => {
-      if(currentNode && currentNode.children) {
+      if (currentNode && currentNode.children) {
         currentNode = currentNode.children[letter];
       }
     });
 
-    if(!currentNode) {
+    if (!currentNode) {
       return null;
     } else {
       return this.findSuggestion(currentNode, word, []);
@@ -48,13 +48,13 @@ export default class Trie {
       let letterNode = currentNode.children[letter];
       let newWord = word + letter;
 
-      if(letterNode.wordEnd) {
+      if (letterNode.wordEnd) {
         suggestions.push({word: newWord, frequency: letterNode.frequency});
       } else {
         this.findSuggestion(letterNode, newWord, suggestions);
       }
-    })
-      return this.sort(suggestions);
+    });
+    return this.sort(suggestions);
   }
 
   sort(suggestions) {
@@ -66,11 +66,12 @@ export default class Trie {
   populate(param) {
     param.forEach(word => {
       this.insert(word);
-    })
+    });
   }
 
   select(word) {
     let currentNode = this.find(word);
+
     currentNode.frequency++;
   }
 
@@ -88,7 +89,7 @@ export default class Trie {
   delete(word) {
     let currentNode = this.find(word);
  
-    if(!currentNode.wordEnd) {
+    if (!currentNode.wordEnd) {
       this.count--;
     }
 
