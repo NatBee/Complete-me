@@ -22,7 +22,6 @@ export default class Trie {
     }
 
     currentNode.wordEnd = true;
-    // console.log(JSON.stringify(this.root, null, '\t'));
   }
 
   suggest(word) {
@@ -40,7 +39,7 @@ export default class Trie {
     } else {
       return this.findSuggestion(currentNode, word, []);
     }
-  };
+  }
 
   findSuggestion(currentNode, word, suggestions) {
     let childrenLetters = Object.keys(currentNode.children);
