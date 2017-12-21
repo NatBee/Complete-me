@@ -60,7 +60,7 @@ export default class Trie {
   sort(suggestions) {
     suggestions.sort((a, b)  => b.frequency - a.frequency);
 
-    return suggestions.map(suggestion => suggestion.word)
+    return suggestions.map(suggestion => suggestion.word);
   }
 
   populate(param) {
