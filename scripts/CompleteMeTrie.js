@@ -7,10 +7,10 @@ export default class Trie {
   }
 
   insert(word) {
-    let stringArr = [...word];
+    let newWord = [...word];
     let currentNode = this.root;
 
-    stringArr.forEach(letter => {
+    newWord.forEach(letter => {
       if(!currentNode.children[letter]) {
         currentNode.children[letter] = new Node(letter);
       }
@@ -25,7 +25,7 @@ export default class Trie {
   }
 
   suggest(word) {
-    let newWord = word.toLowerCase().split('');
+    let newWord = [...word];
     let currentNode = this.root;
 
     newWord.forEach(letter => {
@@ -86,12 +86,7 @@ export default class Trie {
   }
 
   delete(word) {
-    let stringArr = [...word];
-    let currentNode = this.root;
-
-    stringArr.forEach(letter => {
-      currentNode = currentNode.children[letter];
-    });   
+    let currentNode = this.find(word);
  
     if(!currentNode.wordEnd) {
       this.count--;
