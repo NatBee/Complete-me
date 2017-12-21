@@ -43,7 +43,6 @@ export default class Trie {
   };
 
   findSuggestion(currentNode, word, suggestions) {
-    // let suggestions = [];
     let childrenLetters = Object.keys(currentNode.children);
     
     childrenLetters.forEach(letter => {
@@ -56,12 +55,10 @@ export default class Trie {
         this.findSuggestion(letterNode, newWord, suggestions);
       }
     })
-    // return suggestions;
       return this.sort(suggestions);
   }
 
   sort(suggestions) {
-    // console.log(suggestions)
     suggestions.sort((a, b)  => b.frequency - a.frequency);
 
     return suggestions.map(suggestion => suggestion.word)
