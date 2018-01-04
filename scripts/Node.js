@@ -1,4 +1,4 @@
-export default class Node {
+class Node {
   constructor (data) {
     this.data = data;
     this.children = {};
@@ -6,3 +6,5 @@ export default class Node {
     this.frequency = 0;
   }
 }
+
+module.exports = Node

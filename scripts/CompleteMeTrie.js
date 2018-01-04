@@ -1,4 +1,4 @@
-import Node from './Node';
+require Node from './Node';
 
 export default class Trie {
   constructor() {
@@ -7,21 +7,21 @@ export default class Trie {
   }
 
   insert(word) {
-    let newWord = [...word];
-    let currentNode = this.root;
+    let arr = [...word];
+    let current = this.root;
 
-    newWord.forEach(letter => {
-      if (!currentNode.children[letter]) {
-        currentNode.children[letter] = new Node(letter);
+    arr.forEach(letter => {
+      if(!current.children[letter]) {
+        current.children[letter] = new Node(letter);
       }
-      currentNode = currentNode.children[letter];
-    });   
- 
-    if (!currentNode.wordEnd) {
+      current = current.children[letter];
+    })
+
+    if(!current.wordEnd) {
       this.count++;
+    current.wordEnd = true;
     }
 
-    currentNode.wordEnd = true;
   }
 
   suggest(word) {
