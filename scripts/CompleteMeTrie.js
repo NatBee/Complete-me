@@ -1,6 +1,6 @@
-require Node from './Node';
+const Node = require('./Node')
 
-export default class Trie {
+class Trie {
   constructor() {
     this.count = 0;
     this.root = new Node(null);
@@ -97,3 +97,5 @@ export default class Trie {
   }
     
 }
+
+module.exports = Trie;
