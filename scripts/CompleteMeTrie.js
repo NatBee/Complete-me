@@ -25,6 +25,10 @@ class Trie {
   }
 
   suggest(word) {
+    if(!word.length) {
+      return [];
+    }
+
     let newWord = [...word];
     let currentNode = this.root;
 
